@@ -33,6 +33,7 @@
       <table class="question-table" id="questionTable"></table>
       <div class="button-row">
         <button class="default" onclick="finishQuiz()">Submit</button>
+          <button class="default" onclick="clearInputs()">Clear</button>
       </div>
     </div>
     <div id="finishDiv">
@@ -85,6 +86,16 @@
   const firstInput = document.getElementById("q0");
   if(firstInput) firstInput.focus();
 }
+
+      function clearInputs(){
+  questions.forEach((q,i)=>{
+    const input = document.getElementById(`q${i}`);
+    if(input) input.value = "";
+  });
+  const firstInput = document.getElementById("q0");
+  if(firstInput) firstInput.focus();
+}
+
 
       
   function finishQuiz(){
