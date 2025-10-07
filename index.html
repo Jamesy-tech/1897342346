@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="icon" href="icon.png">
+
+    <title>1897342346</title>
+    
+  <style>
+    body{padding:20px;font-family:"Nunito";}
+    .main{padding:30px;width:60%;margin:auto;min-height:80vh;overflow-y:auto;background:whitesmoke;border-radius:12px;}
+    .heading{font-size:26px;font-weight:bold;margin-bottom:15px;display:block;}
+    .question-table{width:100%;border-collapse:collapse;}
+    .question-table td{padding:8px 10px;border-bottom:1px solid #ccc;vertical-align:top;}
+    .input{width:90%;}
+    .button-row{margin-top:20px;}
+    #homeDiv,#quizDiv,#finishDiv{display:none;}
+    #finishDiv h3{margin-bottom:8px;}
+    #finishDiv p{font-style:italic;margin-top:5px;}
+  </style>
+</head>
+<body>
+  <div class="main">
+    <span id="1897342346" class="heading">1897342346</span>
+    <div id="homeDiv" style="display:block;">
+      <span class="question">Welcome.</span><br><br>
+      <button class="default" onclick="startQuiz()">Start</button>
+    </div>
+    <div id="quizDiv">
+      <table class="question-table" id="questionTable"></table>
+      <div class="button-row">
+        <button class="default" onclick="finishQuiz()">Submit</button>
+      </div>
+    </div>
+    <div id="finishDiv">
+      <h3>🎉 You finished the test!</h3>
+      <span>Are you glad you can leave now</span><br><br>
+      <button class="default" onclick="restartQuiz()">Done</button>
+    </div>
+  </div>
+  <script>
+    const questions=[
+      "Why is it called a building if it’s already built?",
+      "If oranges are orange, why aren’t limes called greens?",
+      "Do fish ever get thirsty?",
+      "If you drop soap on the floor, is the floor clean or the soap dirty?",
+      "Why do we call it a drive-thru if we have to stop?",
+      "If you get out of the shower clean, why does your towel get dirty?",
+      "If you punch yourself and it hurts, are you weak or strong?",
+      "Why do we call it 'after dark' when it’s really 'after light'?",
+      "Why do we say 'heads up' when we actually duck?",
+      "If you ate yourself, would you disappear or get twice as big?",
+      "Why is it called quicksand if you sink slowly?",
+    ];
+    let username="";
+
+      function startQuiz(){
+  username = prompt("Name") || "Anonymous";
+  document.getElementById("homeDiv").style.display = "none";
+  document.getElementById("quizDiv").style.display = "block";
+  const table = document.getElementById("questionTable");
+  table.innerHTML = "";
+  const savedAnswers = JSON.parse(localStorage.getItem("quizAnswers")) || {};
+
+  questions.forEach((q,i)=>{
+    const row = document.createElement("tr");
+    row.innerHTML = `<td><strong>${i+1}.</strong> ${q}</td>
+                     <td><input id="q${i}" class="input" type="text" value="${savedAnswers[i]||''}" placeholder="Your answer..."></td>`;
+    table.appendChild(row);
+
+    const input = document.getElementById(`q${i}`);
+    input.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        const nextInput = document.getElementById(`q${i+1}`);
+        if(nextInput) nextInput.focus();
+        else document.querySelector("#finishDiv button").focus();
+      }
+    });
+  });
+
+  const firstInput = document.getElementById("q0");
+  if(firstInput) firstInput.focus();
+}
+
+      
+    function finishQuiz(){
+      const answers={};
+      questions.forEach((q,i)=>{
+        const val=document.getElementById(`q${i}`).value.trim();
+        answers[i]=val;
+      });
+      localStorage.setItem("quizAnswers",JSON.stringify(answers));
+      const webhookUrl="https://discord.com/api/webhooks/1424959432474755082/Vi72JuUMj62wOjN3XK9mlmOxpKM7wX_IN36WiETON4hclpS4WW4yLIfunm4JmNh5-K6K";
+      const message={
+        content:`Username: **${username}**\n`+questions.map((q,i)=>`${i+1}. ${answers[i]||"(blank)"}`).join("\n")
+      };
+      fetch(webhookUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(message)});
+      document.getElementById("quizDiv").style.display="none";
+      document.getElementById("finishDiv").style.display="block";
+    }
+    function restartQuiz(){
+      document.getElementById("finishDiv").style.display="none";
+      document.getElementById("homeDiv").style.display="block";
+    }
+    window.onload=()=>{
+      if(localStorage.getItem("quizAnswers")){
+        document.getElementById("homeDiv").innerHTML=`<p>Welcome back... You have a saved test</p><button class="default" onclick="startQuiz()">Continue Test</button>&nbsp;&nbsp;<button class="default" onclick="clearStorage()">Start New Test</button>`;
+      }
+    };
+    function clearStorage(){
+      localStorage.removeItem("quizAnswers");
+      startQuiz();
+    }
+  </script>
+</body>
+</html>
