@@ -10,7 +10,7 @@
     <title>1897342346</title>
     
   <style>
-    body{padding:20px;font-family:"Nunito";}
+    body{padding:0px; margin:0px; font-family:"Nunito";}
     .main{padding:30px;width:60%;margin:auto;min-height:80vh;overflow-y:auto;background:whitesmoke;border-radius:12px;}
     .heading{font-size:26px;font-weight:bold;margin-bottom:15px;display:block;}
     .question-table{width:100%;border-collapse:collapse;}
@@ -20,9 +20,35 @@
     #homeDiv,#quizDiv,#finishDiv{display:none;}
     #finishDiv h3{margin-bottom:8px;}
     #finishDiv p{font-style:italic;margin-top:5px;}
+
+      #address {
+          flex:1;
+          height:40px;
+          outline:none;
+          margin:0px;
+          width:98%;
+          border:none;
+          font-size:18px;
+          margin-bottom:8px;
+          margin-top:5px;
+          font-family:monospace;
+          text-align:center;
+          }
+
+      .question {
+          font-size:18px;
+          }
+      
   </style>
 </head>
 <body>
+
+    <center>
+        
+    <input id="address" value="1897342346">
+
+        </center>
+    
   <div class="main">
     <span id="1897342346" class="heading">1897342346</span>
     <div id="homeDiv" style="display:block;">
@@ -43,6 +69,12 @@
     </div>
   </div>
   <script>
+
+      document.getElementById('address').addEventListener('keydown', e => {
+    if(e.key==='Enter'){window.location.href=(e.target.value.startsWith('http://')||e.target.value.startsWith('https://')?e.target.value:'https://jamesy-tech.github.io/'+e.target.value);}
+});
+
+      
     const questions=[
       "Why is it called a building if it’s already built?",
       "If oranges are orange, why aren’t limes called greens?",
