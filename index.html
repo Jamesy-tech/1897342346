@@ -127,6 +127,28 @@
       localStorage.removeItem("quizAnswers");
       startQuiz();
     }
+
+      function showHome() {
+  const saved = localStorage.getItem("quizAnswers");
+  if (saved) {
+    document.getElementById("homeDiv").innerHTML = `
+      <p>Welcome back... You have a saved test</p>
+      <button class="default" onclick="startQuiz()">Continue Test</button>
+      &nbsp;&nbsp;
+      <button class="default" onclick="clearStorage()">Start New Test</button>
+    `;
+  } else {
+    document.getElementById("homeDiv").innerHTML = `
+      <span class="question">Welcome.</span><br><br>
+      <button class="default" onclick="startQuiz()">Start</button>
+    `;
+  }
+  document.getElementById("homeDiv").style.display = "block";
+}
+
+
+      window.onload = showHome;
+      
   </script>
 </body>
 </html>
