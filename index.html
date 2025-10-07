@@ -52,8 +52,7 @@
   <div class="main">
     <span id="1897342346" class="heading">1897342346</span>
     <div id="homeDiv" style="display:block;">
-      <span class="question">Welcome.</span><br><br>
-      <button class="default" onclick="startQuiz()">Start</button>
+      
     </div>
     <div id="quizDiv">
       <table class="question-table" id="questionTable"></table>
@@ -172,7 +171,8 @@
   } else {
     document.getElementById("homeDiv").innerHTML = `
       <span class="question">Welcome.</span><br><br>
-      <button class="default" onclick="startQuiz()">Start</button>
+      <button class="default" onclick="startQuiz()">Start</button><br><br>
+         <span class="question" style="font-size:14px;">Note: Your responses will be sent to the server for... <i>inspection 👀</i></span>
     `;
   }
   document.getElementById("homeDiv").style.display = "block";
