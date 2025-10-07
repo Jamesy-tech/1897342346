@@ -87,30 +87,31 @@
 }
 
       
-    function finishQuiz(){
-      const answers={};
-      questions.forEach((q,i)=>{
-        const val=document.getElementById(`q${i}`).value.trim();
-        answers[i]=val;
-      });
-      localStorage.setItem("quizAnswers",JSON.stringify(answers));
-      const webhookUrl="https://discord.com/api/webhooks/1424959432474755082/Vi72JuUMj62wOjN3XK9mlmOxpKM7wX_IN36WiETON4hclpS4WW4yLIfunm4JmNh5-K6K";
-      const message={
-        content:`Username: **${username}**\n`+questions.map((q,i)=>`${i+1}. ${answers[i]||"(blank)"}`).join("\n")
-      };
-      fetch(webhookUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(message)});
-      document.getElementById("quizDiv").style.display="none";
-      document.getElementById("finishDiv").style.display="block";
-    }
-    function restartQuiz(){
-      document.getElementById("finishDiv").style.display="none";
-      document.getElementById("homeDiv").style.display="block";
-    }
-    window.onload=()=>{
-      if(localStorage.getItem("quizAnswers")){
-        document.getElementById("homeDiv").innerHTML=`<p>Welcome back... You have a saved test</p><button class="default" onclick="startQuiz()">Continue Test</button>&nbsp;&nbsp;<button class="default" onclick="clearStorage()">Start New Test</button>`;
-      }
-    };
+  function finishQuiz(){
+  const answers = {};
+  let allFilled = true;
+  questions.forEach((q,i)=>{
+    const val = document.getElementById(`q${i}`).value.trim();
+    if(val === "") allFilled = false;
+    answers[i] = val;
+  });
+
+  if(!allFilled){
+    alert("ERR. Reason: All questions not answered");
+    return;
+  }
+
+  localStorage.setItem("quizAnswers", JSON.stringify(answers));
+  const webhookUrl="https://discord.com/api/webhooks/1424959432474755082/Vi72JuUMj62wOjN3XK9mlmOxpKM7wX_IN36WiETON4hclpS4WW4yLIfunm4JmNh5-K6K";
+  const message={
+    content:`Username: **${username}**\n` + questions.map((q,i)=>`${i+1}. ${answers[i]}`).join("\n")
+  };
+  fetch(webhookUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(message)});
+  document.getElementById("quizDiv").style.display="none";
+  document.getElementById("finishDiv").style.display="block";
+}
+
+      
     function clearStorage(){
       localStorage.removeItem("quizAnswers");
       startQuiz();
